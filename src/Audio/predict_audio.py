@@ -37,17 +37,19 @@ from keras.layers.normalization import BatchNormalization
 from keras.preprocessing.image import ImageDataGenerator
 from clean_audio_data import *
 
+from keras.models import load_model
+model = load_model('../../data/audio_nn.h5')
+model.load_weights('../../data/audio_nn_weights.h5')
+
 
 def prediction(filename, model_name):
     
-    from keras.models import load_model
-    model = load_model('../../data/audio_nn.h5')
-    model.load_weights('../../data/audio_nn_weights.h5')
+    
 
 #     encoder = pickle.load(open('../../data/Saved_Files/encoder.p', 'rb'))
 #     scaler = pickle.load(open('../../data/Saved_Files/scaler.p', 'rb'))
     
-    df = mfcc(filename)
+    df = mfcc_live(filename)
     X = StandardScaler.transform(np.array(df))
     X = X.reshape(X.shape[0], X.shape[1],1)
     
@@ -57,7 +59,7 @@ def prediction(filename, model_name):
     preds = pd.DataFrame({'predicted': preds})
 
     # Actual labels
-    actual=y_test.argmax(axis=1)
+    actual= y_test.argmax(axis=1)
     actual = actual.astype(int).flatten()
     actual = (LabelEncoder.inverse_transform((actual)))
     actual = pd.DataFrame({'actual': actual})
@@ -66,7 +68,6 @@ def prediction(filename, model_name):
     finaldf = actual.join(preds)
 
     return finaldf
-
 
 def accuracy(df):
     accuracy = df[df['correct'] == True].count()[1]/df.groupby('correct', as_index=False).count().sum()[1]
@@ -93,7 +94,7 @@ def pred_df(model):
     return df
 
 
-def pred_df_mf(model, people_dict): 
+def pred_df_mf(model): 
     paths = []
     for (dirpath, dirnames, filenames) in os.walk('live_audio'):
         for filename in filenames:

@@ -16,15 +16,15 @@ def separate(x):
     return lst
 
 
-def mfcc(path):
+def mfcc(col):
     counter = 0
     df = pd.DataFrame(columns = ['mfcc_feature'])
-#     for index, path in enumerate(col):
-    X, sample_rate = librosa.load(path, res_type = 'kaiser_fast',duration = 3, offset=0.5)
-    mfcc = librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=50)
-    mfcc_scaled = np.mean(mfcc.T, axis = 0)
-    df.loc[counter] = [mfcc_scaled]
-#         counter += 1
+    for index, path in enumerate(col):
+        X, sample_rate = librosa.load(path, res_type = 'kaiser_fast',duration = 3, offset=0.5)
+        mfcc = librosa.feature.mfcc(y=X, sr=sample_rate, n_mfcc=50)
+        mfcc_scaled = np.mean(mfcc.T, axis = 0)
+        df.loc[counter] = [mfcc_scaled]
+        counter += 1
     
     mfcc_df = df.copy()
     mfcc_df.mfcc_feature = mfcc_df.mfcc_feature.apply(lambda x: separate(x))
