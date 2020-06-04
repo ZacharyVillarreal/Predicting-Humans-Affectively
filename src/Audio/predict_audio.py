@@ -46,8 +46,8 @@ def prediction(filename, model_name):
     
     
 
-#     encoder = pickle.load(open('../../data/Saved_Files/encoder.p', 'rb'))
-#     scaler = pickle.load(open('../../data/Saved_Files/scaler.p', 'rb'))
+    encoder = pickle.load(open('../../data/Saved_Files/encoder.p', 'rb'))
+    scaler = pickle.load(open('../../data/Saved_Files/scaler.p', 'rb'))
     
     df = mfcc_live(filename)
     X = StandardScaler.transform(np.array(df))
