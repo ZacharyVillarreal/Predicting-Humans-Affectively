@@ -11,6 +11,7 @@ import IPython.display as ipd
 from pydub import AudioSegment
 from pydub.playback import play
 
+
 print('Loading Model...')
 model = load_model('../../data/fer2013.h5')
 model.load_weights('../../data/fer2013_weights.h5')

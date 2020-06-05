@@ -78,7 +78,7 @@ def predict_live(filename):
 
     preds1=preds.argmax(axis=1)
     # predictions 
-#     predictions = (LabelEncoder.inverse_transform((preds1)))[0]
+    preds1 = (LabelEncoder.inverse_transform((preds1)))[0]
     preds = pd.DataFrame({'predicted': preds1})
     return preds
 
