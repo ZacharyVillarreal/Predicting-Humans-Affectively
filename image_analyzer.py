@@ -47,7 +47,7 @@ def get_image_label(path):
     face = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     faces = face.detectMultiScale(gray, 1.3, 10)
     yhat = 'test'
-
+#     cv2.imwrite('/assets/cv2_img.jpg', full_size_image)
     # detecting faces
     for (x, y, w, h) in faces:
         roi_gray = gray[y:y + h, x:x + w]
@@ -57,8 +57,8 @@ def get_image_label(path):
         #predicting the emotion
         yhat= img_model.predict(cropped_img)
         cv2.putText(full_size_image, labels[int(np.argmax(yhat))], (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1, cv2.LINE_AA)
-        print("Emotion: "+labels[int(np.argmax(yhat))])
-        print("Gender: " + gender_detect(path))
+        print(str(labels[int(np.argmax(yhat))]))
+        print(str(gender_detect(path)))
         
     label = gender_detect(path) + '_' + labels[int(np.argmax(yhat))]
     return label.lower()

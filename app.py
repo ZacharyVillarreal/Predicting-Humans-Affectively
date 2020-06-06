@@ -31,17 +31,17 @@ import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
+import dash_bootstrap_components as dbc
 
 
-
-# if not os.path.exists(UPLOAD_DIRECTORY):
-#     os.makedirs(UPLOAD_DIRECTORY)
+if not os.path.exists(UPLOAD_DIRECTORY):
+    os.makedirs(UPLOAD_DIRECTORY)
 
 
 # Normally, Dash creates its own Flask server internally. By creating our own,
 # we can create a route for downloading files directly:
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+# external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 
 # @server.route("/download/<path:path>")
@@ -71,15 +71,27 @@ app.layout = html.Div(
             },
             multiple=True,
         ),
-        html.H2("File List"),
-        html.Ul(id="file-list"),
+        html.H2(
+               id="emotion",
+               children = "Emotion Detected: Waiting for an input...",
+               style = {'display': 'inline-block'}
+               ),
+        html.H3(
+                id="sex",
+                children = "Sex Detected: Waiting for an input..." 
+               ),
+#         html.Ul(id="file-list"),
         html.Label(id='l1', children=''),
         html.Audio(
                 id='a1', 
                 controls = True, 
-                autoPlay = False
+                autoPlay = False,
+                style = {'display':'inline-block'}
                 ),
-        html.Img(id='img1')
+        html.Img(
+                id='img1',
+                style={'height':'600px', 'width':'600px'}
+                )
 
         
     ],
@@ -112,24 +124,38 @@ def file_download_link(filename):
 
 
 @app.callback(
-    [Output("a1", "src"), Output("l1", "children"), Output("img1", "src")],
+    [Output("a1", "src"), Output("l1", "children"), Output("img1", "src"), 
+     Output("emotion", "children"), Output("sex", "children")],
     [Input("upload-data", "filename"), Input("upload-data", "contents")],
 )
 def update_output(uploaded_filenames, uploaded_file_contents):
     """Save uploaded files and regenerate the file list."""
     print("Update output called.")
-    url = get_audio_file(uploaded_filenames, uploaded_file_contents)
+    url, image, emotion, sex = get_file(uploaded_filenames, uploaded_file_contents)
     print("Url is:", url)
-    print("Url is type:", type(url))
-    return url, url, "/assets/female_happy.jpg"
+    return url, url, image, "Emotion Detected: " + emotion.upper(), "Sex Detected: " + sex.upper()
 
-def get_audio_file(uploaded_filenames, uploaded_file_contents):
-    url = '/assets/test.wav'
+def get_file(uploaded_filenames, uploaded_file_contents):
+    url = '/assets/female_happy.wav'
+    image = '/assets/female_happy.jpg'
+    emotion = "Waiting for an input..."
+    sex = "Waiting for an input..."
+    
     if uploaded_filenames is not None and uploaded_file_contents is not None:
         for name, data in zip(uploaded_filenames, uploaded_file_contents):
-            save_file(name, data)
-            url = app.get_asset_url(analyze_file(name))
-    return url
+            if "wav" in name or "m4a" in name or "mp3" in name:
+                save_file(name, data)
+                print('We recieved an audio file.')
+                image = app.get_asset_url(analyze_sound(name)[0])
+                emotion, sex = analyze_sound(name)[1:]
+                url = "/assets/" + name
+            else:
+                print("We received an image file.")
+                save_file(name, data)
+                url = app.get_asset_url(analyze_file(name)[0])
+                emotion, sex = analyze_file(name)[1:]
+                image = "/assets/" + name
+    return url, image, emotion, sex
                 
 def analyze_file(name):
     cmd = ['python', 'image_analyzer.py', name]
@@ -140,9 +166,24 @@ def analyze_file(name):
         outputs.append(line)
 #     print('Call complete: ', outputs)
     audio_file = outputs[-1].strip().decode()
-    print("File test: ",audio_file)
-    return audio_file
+    sex = outputs[-2].strip().decode()
+    emotion = outputs[-3].strip().decode()
+#     print("File test: ",audio_file)
+    return audio_file, emotion, sex
 
+def analyze_sound(name):
+    cmd = ['python', 'audio_analyzer.py', name]
+    p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    outputs = []
+    for line in p.stdout.readlines():
+        print('line:', line)
+        outputs.append(line)
+#     print('Call complete: ', outputs)
+    image_file = outputs[-1].strip().decode()
+    sex = outputs[-3].strip().decode()
+    emotion = outputs[-2].strip().decode()
+#     print("File test: ",image_file)
+    return image_file, emotion, sex
     
     
     
