@@ -34,26 +34,26 @@ from dash.dependencies import Input, Output
 
 
 
-if not os.path.exists(UPLOAD_DIRECTORY):
-    os.makedirs(UPLOAD_DIRECTORY)
+# if not os.path.exists(UPLOAD_DIRECTORY):
+#     os.makedirs(UPLOAD_DIRECTORY)
 
 
 # Normally, Dash creates its own Flask server internally. By creating our own,
 # we can create a route for downloading files directly:
-server = Flask(__name__)
-app = dash.Dash(server=server, external_stylesheets=[dbc.themes.DARKLY])
+external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
+app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 
-@server.route("/download/<path:path>")
-def download(path):
-    """Serve a file from the upload directory."""
-    return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
+# @server.route("/download/<path:path>")
+# def download(path):
+#     """Serve a file from the upload directory."""
+#     return send_from_directory(UPLOAD_DIRECTORY, path, as_attachment=True)
 
 
 app.layout = html.Div(
     [
-        html.H1("File Browser"),
-        html.H2("Upload"),
+        html.H1("Emotion Detection App"),
+        html.H2("Please Upload an Audio or an Image File"),
         dcc.Upload(
             id="upload-data",
             children=html.Div(
@@ -73,15 +73,16 @@ app.layout = html.Div(
         ),
         html.H2("File List"),
         html.Ul(id="file-list"),
+        html.Label(id='l1', children=''),
         html.Audio(
-                id='audio', 
-                src='',
+                id='a1', 
                 controls = True, 
                 autoPlay = False
-                )
+                ),
+        html.Img(id='img1')
+
         
     ],
-    style={"max-width": "500px"},
 )
 
 
@@ -108,20 +109,28 @@ def file_download_link(filename):
     return html.A(filename, href=location)
 
 
+
+
 @app.callback(
-    Output("audio", "src"),
+    [Output("a1", "src"), Output("l1", "children"), Output("img1", "src")],
     [Input("upload-data", "filename"), Input("upload-data", "contents")],
 )
 def update_output(uploaded_filenames, uploaded_file_contents):
     """Save uploaded files and regenerate the file list."""
+    print("Update output called.")
+    url = get_audio_file(uploaded_filenames, uploaded_file_contents)
+    print("Url is:", url)
+    print("Url is type:", type(url))
+    return url, url, "/assets/female_happy.jpg"
 
+def get_audio_file(uploaded_filenames, uploaded_file_contents):
+    url = '/assets/test.wav'
     if uploaded_filenames is not None and uploaded_file_contents is not None:
         for name, data in zip(uploaded_filenames, uploaded_file_contents):
             save_file(name, data)
-            analyze_file(name)
-
-    return app.get_asset_url('YAF_page_happy.wav')
-    
+            url = app.get_asset_url(analyze_file(name))
+    return url
+                
 def analyze_file(name):
     cmd = ['python', 'image_analyzer.py', name]
     p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -129,6 +138,13 @@ def analyze_file(name):
     for line in p.stdout.readlines():
         print('line:', line)
         outputs.append(line)
+#     print('Call complete: ', outputs)
+    audio_file = outputs[-1].strip().decode()
+    print("File test: ",audio_file)
+    return audio_file
+
+    
+    
     
 if __name__ == '__main__':
     app.run_server(debug=True, host='0.0.0.0', port=8899)

@@ -53,7 +53,7 @@ def emotion_detect(path):
         cv2.putText(full_size_image, labels[int(np.argmax(yhat))], (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 1, cv2.LINE_AA)
         print("Emotion: "+labels[int(np.argmax(yhat))])
         print("Gender: " + gender_detect(path))
-        
+    cv2.imwrite('cv2_image.jpg', full_size_image)
     #     cv2.imshow('Emotion',full_size_image)
     #     cv2.waitKey(0)
 

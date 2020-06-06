@@ -176,7 +176,8 @@ def get_image_label(path):
         print("Emotion: "+labels[int(np.argmax(yhat))])
         print("Gender: " + gender_detect(path))
         
-    label = gender_detect(path) + '_' + labels[int(np.argmax(yhat))]
+        label = gender_detect(path) + '_' + labels[int(np.argmax(yhat))]
+        
     return label.lower()
 
 def image_to_audio(path):

@@ -46,6 +46,7 @@ def get_image_label(path):
     gray=cv2.cvtColor(full_size_image,cv2.COLOR_RGB2GRAY)
     face = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
     faces = face.detectMultiScale(gray, 1.3, 10)
+    yhat = 'test'
 
     # detecting faces
     for (x, y, w, h) in faces:
@@ -64,15 +65,34 @@ def get_image_label(path):
 
 def image_to_audio(path):
     label = get_image_label(path)
-    blah = label.split('_')
-    print('Gender: ', blah[0])
-    print('Emotion: ', blah[1])
-    fname = "../" + audio_df[audio_df['labels'] == label].sample(5)['path'].values[0]
-    return fname
+    if label == 'male_angry':
+        return 'male_angry.wav'
+    if label == 'male_disgust':
+        return 'male_disgust.wav'
+    if label == 'male_fear':
+        return 'male_fear.wav'
+    if label == 'male_happy':
+        return 'male_happy.wav'
+    if label == 'male_neutral':
+        return 'male_neutral.wav'
+    if label == 'male_sad':
+        return 'male_sad.wav'
+    if label == 'female_sad':
+        return 'female_sad.wav'
+    if label == 'female_neutral':
+        return 'female_neutral.wav'
+    if label == 'female_happy':
+        return 'female_happy.wav'
+    if label == 'female_fear':
+        return 'female_fear.wav'
+    if label == 'female_disgust':
+        return 'female_disgust.wav'
+    if label == 'female_angry':
+        return 'female_angry.wav'
+    
 
 
 
 path = 'assets/' + sys.argv[-1]
 print('We received this file: ', sys.argv[-1])
-print(path)
 print(image_to_audio(path))
