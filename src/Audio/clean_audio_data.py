@@ -2,7 +2,7 @@ import pandas as pd
 import os
 import numpy as np
 
-TESS = "../../data/TESS Toronto emotional speech set data/"
+TESS = "../../data/tess_toronto_emotional_speech_set_data/"
 RAV = "../../data/RAV/audio_speech_actors_01-24/"
 SAVEE = "../../data/SAVEE/"
 CREMA = "../../data/AudioWAV/"

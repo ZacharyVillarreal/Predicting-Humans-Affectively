@@ -52,15 +52,15 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 app.layout = html.Div(
     [
-        html.H1("Emotion Detection App"),
-        html.H2("Please Upload an Audio or an Image File"),
-        dcc.Upload(
+        html.H1("Emotion Detection App", style={'textAlign':'center'}),
+        dbc.Row([
+            dcc.Upload(
             id="upload-data",
             children=html.Div(
                 ["Drag and drop or click to select a file to upload."]
             ),
             style={
-                "width": "100%",
+                "width": "40%",
                 "height": "60px",
                 "lineHeight": "60px",
                 "borderWidth": "1px",
@@ -69,8 +69,8 @@ app.layout = html.Div(
                 "textAlign": "center",
                 "margin": "10px",
             },
-            multiple=True,
-        ),
+            multiple=True,),
+        ], align = 'right'),
         html.H2(
                id="emotion",
                children = "Emotion Detected: Waiting for an input...",
@@ -90,7 +90,7 @@ app.layout = html.Div(
                 ),
         html.Img(
                 id='img1',
-                style={'height':'600px', 'width':'600px'}
+                style={'height':'550px'}
                 )
 
         
@@ -136,8 +136,8 @@ def update_output(uploaded_filenames, uploaded_file_contents):
     return url, url, image, "Emotion Detected: " + emotion.upper(), "Sex Detected: " + sex.upper()
 
 def get_file(uploaded_filenames, uploaded_file_contents):
-    url = '/assets/female_happy.wav'
-    image = '/assets/female_happy.jpg'
+    url = '/assets/male_angry.wav'
+    image = '/assets/nathan.jpg'
     emotion = "Waiting for an input..."
     sex = "Waiting for an input..."
     
