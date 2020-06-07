@@ -111,6 +111,6 @@ def audio_image(filename):
         return 'female_angry.jpg'
 
 
-# path = 'assets/' + sys.argv[-1]
-# print('We received this file: ', sys.argv[-1])
-# print(audio_image(path))
+path = 'assets/' + sys.argv[-1]
+print('We received this file: ', sys.argv[-1])
+print(audio_image(path))

@@ -52,50 +52,95 @@ app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY])
 
 app.layout = html.Div(
     [
-        html.H1("Emotion Detection App", style={'textAlign':'center'}),
-        dbc.Row([
+        dbc.Row(
+            [ 
+            dbc.Col(html.H1("Emotion Detection App", style={'textAlign':'center'}))
+            ], style = {'margin':'auto','width': "50%"}),
+        dbc.Row(
+        [dbc.Col(html.Div(" ")),
+        dbc.Col(html.Div(" ")),
+        dbc.Col(html.Div(" "))]),
+        dbc.Row(
+            [
+                dbc.Col(html.Div("")),
+                dbc.Col(
             dcc.Upload(
-            id="upload-data",
-            children=html.Div(
-                ["Drag and drop or click to select a file to upload."]
-            ),
-            style={
-                "width": "40%",
-                "height": "60px",
-                "lineHeight": "60px",
-                "borderWidth": "1px",
-                "borderStyle": "dashed",
-                "borderRadius": "5px",
-                "textAlign": "center",
-                "margin": "10px",
-            },
-            multiple=True,),
-        ], align = 'right'),
-        html.H2(
+                id="upload-data",
+                children=html.Div(
+                                ["Drag and drop or click to select a file to upload."]
+                                 ),
+                style={
+                        "width": "70%",
+                        "height": "60px",
+                        "lineHeight": "60px",
+                        "borderWidth": "1px",
+                        "borderStyle": "dashed",
+                        "borderRadius": "5px",
+                        "textAlign": "center",
+                        "margin": "auto",
+                      },
+            multiple=True,)),
+                dbc.Col(html.Div(""))
+            
+            ]),
+        dcc.Interval(id="progress-interval", n_intervals=0, interval=500),
+        dbc.Progress(id="progress", style={
+                        "width": "70%",
+                        "lineHeight": "60px",
+                        "borderWidth": "1px",
+                        "borderRadius": "5px",
+                        "textAlign": "center",
+                        "margin": "auto",
+                      },),
+        dbc.Row(
+        [
+            dbc.Col(html.H2(
+               id="emotion-title",
+               children = "Emotion Detected",
+               ),),
+            dbc.Col(html.H2(
+                id="sex-title",
+                children = "Sex Detected" 
+               ),)
+        ]),
+        dbc.Row(
+        [
+            dbc.Col(html.H2(
                id="emotion",
-               children = "Emotion Detected: Waiting for an input...",
-               style = {'display': 'inline-block'}
-               ),
-        html.H3(
+               children = "Waiting for file...",
+               ),),
+            dbc.Col(html.H2(
                 id="sex",
-                children = "Sex Detected: Waiting for an input..." 
-               ),
+                children = "Waiting for file..." 
+               ),)
+        ], style = {"margin":"auto", "color":"green"}),
 #         html.Ul(id="file-list"),
-        html.Label(id='l1', children=''),
-        html.Audio(
+        dbc.Row(
+        [
+            dbc.Col(html.H2(
+               id="audio-title",
+               children = "Audio File",
+               ),),
+            dbc.Col(html.H2(
+                id="image-title",
+                children = "Image File" 
+               ),)
+        ], style = {"margin":"auto"}),
+        dbc.Row(
+            [
+                dbc.Col(html.Audio(
                 id='a1', 
                 controls = True, 
                 autoPlay = False,
                 style = {'display':'inline-block'}
-                ),
-        html.Img(
+                )),
+            dbc.Col(html.Img(
                 id='img1',
                 style={'height':'550px'}
-                )
-
-        
-    ],
+                ))
+    ], style = {"margin":"auto"}
 )
+])
 
 
 def save_file(name, content):
@@ -124,7 +169,7 @@ def file_download_link(filename):
 
 
 @app.callback(
-    [Output("a1", "src"), Output("l1", "children"), Output("img1", "src"), 
+    [Output("a1", "src"), Output("img1", "src"), 
      Output("emotion", "children"), Output("sex", "children")],
     [Input("upload-data", "filename"), Input("upload-data", "contents")],
 )
@@ -133,7 +178,7 @@ def update_output(uploaded_filenames, uploaded_file_contents):
     print("Update output called.")
     url, image, emotion, sex = get_file(uploaded_filenames, uploaded_file_contents)
     print("Url is:", url)
-    return url, url, image, "Emotion Detected: " + emotion.upper(), "Sex Detected: " + sex.upper()
+    return url, image, emotion.upper(), sex.upper()
 
 def get_file(uploaded_filenames, uploaded_file_contents):
     url = '/assets/male_angry.wav'
@@ -185,7 +230,16 @@ def analyze_sound(name):
 #     print("File test: ",image_file)
     return image_file, emotion, sex
     
-    
+@app.callback(
+    [Output("progress", "value"), Output("progress", "children")],
+    [Input("progress-interval", "n_intervals")],
+)
+def update_progress(n):
+    # check progress of some background process, in this example we'll just
+    # use n_intervals constrained to be in 0-100
+    progress = min(n % 110, 100)
+    # only add text after 5% progress to ensure text isn't squashed too much
+    return progress, f"{progress} %" if progress >= 5 else ""
     
 if __name__ == '__main__':
     app.run_server(debug=True, host='0.0.0.0', port=8899)
