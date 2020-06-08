@@ -114,7 +114,6 @@ app.layout = html.Div(
                 children = "Waiting for file..." 
                ),)
         ], style = {"margin":"auto", "color":"green"}),
-#         html.Ul(id="file-list"),
         dbc.Row(
         [
             dbc.Col(html.H2(
