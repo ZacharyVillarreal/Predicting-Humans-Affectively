@@ -10,6 +10,9 @@ import os
 import librosa
 
 def separate(x):
+    '''
+    separate: separates the values within a list and returns the mean
+    '''
     lst = []
     for i in x:
         lst.append(np.mean(i))
@@ -17,6 +20,19 @@ def separate(x):
 
 
 def mfcc(col):
+    '''
+    mfcc_live: takes in an audio file from the file path column in 
+    the audio dataframe and performs feature extraction which 
+    specifically looks at the mfcc of that audio file
+
+    Parameters
+    ----------
+    col: pandas dataframe colun
+
+    Returns
+    -------
+    DataFrame with mfcc values for all audio files
+    '''
     counter = 0
     df = pd.DataFrame(columns = ['mfcc_feature'])
     for index, path in enumerate(col):
@@ -31,6 +47,5 @@ def mfcc(col):
     mfcc_list = ['mfcc'+str(i) for i in range(50)]
     
     df2 = pd.DataFrame(mfcc_df['mfcc_feature'].values.tolist(), columns = mfcc_list)
-#     df2['path'] = path
     return df2
 

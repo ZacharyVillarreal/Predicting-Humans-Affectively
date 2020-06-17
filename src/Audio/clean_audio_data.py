@@ -2,12 +2,28 @@ import pandas as pd
 import os
 import numpy as np
 
+
+# Import all audio 
 TESS = "../../data/tess_toronto_emotional_speech_set_data/"
 RAV = "../../data/RAV/audio_speech_actors_01-24/"
 SAVEE = "../../data/SAVEE/"
 CREMA = "../../data/AudioWAV/"
 
 def create_savee(SAVEE=SAVEE):
+    '''
+    create_savee: takes in the SAVEE directory, which holds all 
+    SAVEE audio files. Translates the audio file names to their descriptive
+    label, including sex and emotion. Then convert the list of labeled audio
+    files into a pandas dataframe
+
+    Parameters
+    ----------
+    SAVEE: directory path
+
+    Returns
+    -------
+    DataFrame with labeled SAVEE files
+    '''
     # Get the data location for SAVEE
     dir_list = os.listdir(SAVEE)
 
@@ -33,13 +49,26 @@ def create_savee(SAVEE=SAVEE):
             emotion.append('male_error') 
         path.append(SAVEE + i)
 
-    # Now check out the label count distribution 
     SAVEE_df = pd.DataFrame(emotion, columns = ['labels'])
     SAVEE_df['source'] = 'SAVEE'
     SAVEE_df = pd.concat([SAVEE_df, pd.DataFrame(path, columns = ['path'])], axis = 1)
     return SAVEE_df
     
 def create_ravdess(RAV=RAV):
+    '''
+    create_ravdess: takes in the RAVdess directory, which holds all 
+    Ravdess audio files. Translates the audio file names to their descriptive
+    label, including sex and emotion. Then convert the list of labeled audio
+    files into a pandas dataframe
+
+    Parameters
+    ----------
+    RAVdess: directory path for RAVdess
+
+    Returns
+    -------
+    DataFrame with labeled RAVdess files
+    '''
     dir_list = os.listdir(RAV)
     dir_list.sort()
 
@@ -71,6 +100,20 @@ def create_ravdess(RAV=RAV):
     return RAV_df
     
 def create_tess(TESS=TESS):
+    '''
+    create_TESS: takes in the TESS directory, which holds all 
+    TESS audio files. Translates the audio file names to their descriptive
+    label, including sex and emotion. Then convert the list of labeled audio
+    files into a pandas dataframe
+
+    Parameters
+    ----------
+    TESS: directory path for TESS
+
+    Returns
+    -------
+    DataFrame with labeled TESS files
+    '''
     dir_list = os.listdir(TESS)
     dir_list.sort()
     dir_list
@@ -106,6 +149,20 @@ def create_tess(TESS=TESS):
     
     
 def create_crema_d(CREMA=CREMA):
+    '''
+    create_crema_d: takes in the CREMA_D directory, which holds all 
+    CREMA_D audio files. Translates the audio file names to their descriptive
+    label, including sex and emotion. Then convert the list of labeled audio
+    files into a pandas dataframe
+
+    Parameters
+    ----------
+    RAVdess: directory path for CREMA_D
+
+    Returns
+    -------
+    DataFrame with labeled CREMA_D files
+    '''
     dir_list = os.listdir(CREMA)
     dir_list.sort()
 
@@ -158,6 +215,18 @@ def create_crema_d(CREMA=CREMA):
     
     
 def create_one_df():
+    '''
+    create_one_df: takes in all the dataframes, which holds all 
+    audio files dataframes. Concatenates all the audio dataframes
+    into one.
+
+    Parameters
+    ----------
+
+    Returns
+    -------
+    DataFrame with all labeled audio files from all sources
+    '''
     SAVEE_df= create_savee()
     RAV_df = create_ravdess()
     TESS_df = create_tess()
@@ -179,5 +248,4 @@ def create_one_df():
     df = df[['gender','emotion','source','path', 'true_label']]
 
     df = df[df['emotion'] != 'Unknown']
-#     df.to_csv("Emotional_audio_df.csv",index=False)
     return df

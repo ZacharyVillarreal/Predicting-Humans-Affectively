@@ -143,14 +143,18 @@ app.layout = html.Div(
 
 
 def save_file(name, content):
-    """Decode and store a file uploaded with Plotly Dash."""
+    """
+    save_file: Decode and store a file uploaded with Plotly Dash.
+    """
     data = content.encode("utf8").split(b";base64,")[1]
     with open(os.path.join(UPLOAD_DIRECTORY, name), "wb") as fp:
         fp.write(base64.decodebytes(data))
 
 
 def uploaded_files():
-    """List the files in the upload directory."""
+    """
+    uploaded_files: List the files in the upload directory.
+    """
     files = []
     for filename in os.listdir(UPLOAD_DIRECTORY):
         path = os.path.join(UPLOAD_DIRECTORY, filename)
@@ -160,7 +164,9 @@ def uploaded_files():
 
 
 def file_download_link(filename):
-    """Create a Plotly Dash 'A' element that downloads a file from the app."""
+    """
+    file_download_link: Create a Plotly Dash 'A' element that downloads a file from the app.
+    """
     location = "/download/{}".format(urlquote(filename))
     return html.A(filename, href=location)
 
@@ -173,13 +179,28 @@ def file_download_link(filename):
     [Input("upload-data", "filename"), Input("upload-data", "contents")],
 )
 def update_output(uploaded_filenames, uploaded_file_contents):
-    """Save uploaded files and regenerate the file list."""
+    """
+    update_output: Save uploaded files and regenerate the file list.
+    """
     print("Update output called.")
     url, image, emotion, sex = get_file(uploaded_filenames, uploaded_file_contents)
     print("Url is:", url)
     return url, image, emotion.upper(), sex.upper()
 
 def get_file(uploaded_filenames, uploaded_file_contents):
+    """
+    get_file: is activated once a file is dragged into or uploaded via the 
+    app upload box. 
+
+    Parameters
+    ----------
+    uploaded_filenames: name of file inputted
+    uploaded_file_contents: contents of file inputted
+
+    Returns
+    -------
+    url, image, emotion, sex: strings to change within dash app (children)
+    """
     url = '/assets/male_angry.wav'
     image = '/assets/nathan.jpg'
     emotion = "Waiting for an input..."
@@ -202,43 +223,57 @@ def get_file(uploaded_filenames, uploaded_file_contents):
     return url, image, emotion, sex
                 
 def analyze_file(name):
+    """
+    analyze_file: takes in file name, runs it through an external .py script
+    located in file_conversions.py
+
+    Parameters
+    ----------
+    name: name of image file inputted
+
+    Returns
+    -------
+    audio_file, emotion, sex: string values to return to get_file function above
+    """
     cmd = ['python', 'image_analyzer.py', name]
     p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    
     outputs = []
     for line in p.stdout.readlines():
         print('line:', line)
         outputs.append(line)
-#     print('Call complete: ', outputs)
+        
     audio_file = outputs[-1].strip().decode()
     sex = outputs[-2].strip().decode()
     emotion = outputs[-3].strip().decode()
-#     print("File test: ",audio_file)
     return audio_file, emotion, sex
 
 def analyze_sound(name):
+     """
+    analyze_sound: takes in audio file name, runs it through an external .py script
+    located in audio_analyzer.py
+
+    Parameters
+    ----------
+    name: name of audio file inputted
+
+    Returns
+    -------
+    image_file, emotion, sex: string values to return to get_file function above
+    """
     cmd = ['python', 'audio_analyzer.py', name]
     p = subprocess.Popen(cmd, shell=False, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     outputs = []
     for line in p.stdout.readlines():
         print('line:', line)
         outputs.append(line)
-#     print('Call complete: ', outputs)
+
     image_file = outputs[-1].strip().decode()
     sex = outputs[-3].strip().decode()
     emotion = outputs[-2].strip().decode()
-#     print("File test: ",image_file)
     return image_file, emotion, sex
     
-@app.callback(
-    [Output("progress", "value"), Output("progress", "children")],
-    [Input("progress-interval", "n_intervals")],
-)
-def update_progress(n):
-    # check progress of some background process, in this example we'll just
-    # use n_intervals constrained to be in 0-100
-    progress = min(n % 110, 100)
-    # only add text after 5% progress to ensure text isn't squashed too much
-    return progress, f"{progress} %" if progress >= 5 else ""
+
     
 if __name__ == '__main__':
     app.run_server(debug=True, host='0.0.0.0', port=8899)

@@ -12,13 +12,24 @@ from keras.callbacks import ReduceLROnPlateau, TensorBoard, EarlyStopping, Model
 from keras.models import load_model
 from image_clean import *
 
+# Load in data frames using clean_image_df function from image_clean.py
 training_df, validation_df, test_df, df = clean_image_df()
 
 
 def fer2013_to_X(df):
-    """Transforms the (blank separated) pixel strings in the DataFrame to an 3-dimensional array 
-    (1st dim: instances, 2nd and 3rd dims represent 2D image)."""
-    
+    '''
+    fer2013_to_X: takes in a pandas dataframe that includes each image and 
+    their respective pixel values. Then transforms the pixel strings into a 
+    3-D array (1st dim: instances, 2&3D: 2D image representation)
+
+    Parameters
+    ----------
+    df: pandas dataframe
+
+    Returns
+    -------
+    X (pixel values) that are the predictors for the 2-D CNN
+    '''    
     X = []
     pixels_list = df["pixels"].values
     
@@ -55,7 +66,8 @@ y_test = pd.get_dummies(test_df['emotion']).values
 np.save("../../data/fer2013_X_test", X_test)
 np.save("../../data/fer2013_y_test", y_test)
 
-# CNN
+
+# 2-D Convolutional NN
 model = Sequential()
 input_shape = (48,48,1)
 model.add(Conv2D(64, (3, 3), input_shape=input_shape,activation='relu', padding='same'))
@@ -83,9 +95,11 @@ model.add(Dropout(0.2))
 model.add(Dense(7))
 model.add(Activation('softmax'))
 
-#Compiling the model
+# Compiling the model
 model.compile(loss='categorical_crossentropy', metrics=['accuracy'],optimizer=Adam(lr=0.001))
 
+# Providing an early stopping mechanism to the CNN above, so that when the val_loss stop decreasing or increasing, 
+# it will stop the NN from running
 earlystop = EarlyStopping(monitor='val_loss',
                           patience=20,
                           verbose=1,
@@ -98,7 +112,7 @@ reduce_lr = ReduceLROnPlateau(monitor='val_loss',
                               verbose=1,
                               min_delta=0.0001)
 
-# Training Model
+# Model Fit
 model.fit(x=X,     
             y=y, 
             batch_size=64, 
