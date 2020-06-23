@@ -118,8 +118,9 @@ Waveplot             |  MFCC (Male) | MFCC (Female)
 
 While although there are subtle differences in the MFCC plots, it might be hard to discern the key differences between both the male MFCC and the female MFCC of their respective *angry* audio clips. It is much more apparent in the waveplot, that there is a difference in the levels of sound provided by the two voice actors. The male's voice is distinctly louder than the female's. 
 
-<a href="#Table-of-Contents">Back to top</a>
+<a href="#Table-of-Contents">Back to top</a><br>
 <a name="Image-Data"></a>
+
 **Image Data:**<br>
 * 36,000 Images
 * 7 Emotions
