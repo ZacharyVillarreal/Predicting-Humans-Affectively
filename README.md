@@ -202,15 +202,11 @@ Live images needed further investigation in order to fit the input parameters of
 
 Here is an example of when we input an image file.
 
-<p align='center'>
-<img src="images/app_example.png" width="700" height="420"> 
-</p>
-
-
+![](images/female_angry_app.png)
 This app could be used for things, as simple as, trying to recognize emotions on images of sound bytes of yourself, to being able to teach individuals the importance of facial language or how the inflection in our voice is depicted by other people.
 
 <a href="#Table-of-Contents">Back to top</a><br>
 <a name="Conclusion"></a>
 ## Conclusion
----
+
 In conclusion, the methodologies implemented in this project allowed for an increase in prediction accuracy by 40-60% depending on the type of input being tested. The justification for the limitation in accuracy could stem from two major factors: 1) the initial training dataset was relatively small; 2) either or both of the datasets were biased in terms of user-labeled data. Although the accuracy was not extremely high, the current models do produce mostly correct predictions when it comes to live data. 
