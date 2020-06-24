@@ -4,7 +4,7 @@
 
 **Using Audio and Images to Predict Human Emotion**<br>
 Zachary Villarreal<br>
-[LinkedIn](#https://www.linkedin.com/in/zachary-p-villarreal/) | [GitHub](#https://github.com/ZacharyVillarreal) | [zpvillarreal@gmail.com](#zpvillarreal@gmail.com)
+[LinkedIn](https://www.linkedin.com/in/zachary-p-villarreal/) | [GitHub](https://github.com/ZacharyVillarreal) | [zpvillarreal@gmail.com](#zpvillarreal@gmail.com)
 
 
 <a name="Table-of-Contents"></a>
@@ -47,15 +47,15 @@ This project takes in both facial images and audio samples in order to create a 
 <a name="Data-Allocation"></a>
 ### Data Allocation
 * Audio:
-    * [Crema-D](#https://www.kaggle.com/ejlok1/cremad): Crowd Sources Emotional Multimodal Actors Dataset
-    * [RAVDESS](#https://www.kaggle.com/uwrfkaggler/ravdess-emotional-speech-audio): Ryerson Audio-Visual Database of Emotional Speech and Song
-    * [SAVEE](#https://www.kaggle.com/ejlok1/surrey-audiovisual-expressed-emotion-savee): Surrey Audio-Visual Expressed Emotion
-    * [TESS](#https://www.kaggle.com/ejlok1/toronto-emotional-speech-set-tess): Toronto Emotional Speech Set
+    * [Crema-D](https://www.kaggle.com/ejlok1/cremad): Crowd Sources Emotional Multimodal Actors Dataset
+    * [RAVDESS](https://www.kaggle.com/uwrfkaggler/ravdess-emotional-speech-audio): Ryerson Audio-Visual Database of Emotional Speech and Song
+    * [SAVEE](https://www.kaggle.com/ejlok1/surrey-audiovisual-expressed-emotion-savee): Surrey Audio-Visual Expressed Emotion
+    * [TESS](https://www.kaggle.com/ejlok1/toronto-emotional-speech-set-tess): Toronto Emotional Speech Set
 
 > Note: Four sets of data were utilized for emotion recognition via audio files, for the reason that each data set consisted only of a couple of thousand audio files. When accumulated together, these databases allowed for a more accurate predictive model. Also, an end goal of the models is to build a web application that takes in live data. Four different audio sources can provide different levels of pitch, sound, volume, etc. which can help combat variances within users' microphones.
 
 * Images:
-    * [FER2013](#https://www.kaggle.com/deadskull7/fer2013): Facial Expression Recognition Competition
+    * [FER2013](https://www.kaggle.com/deadskull7/fer2013): Facial Expression Recognition Competition
 
 <a href="#Table-of-Contents">Back to top</a>
 <a name="Pipeline"></a>
@@ -66,7 +66,7 @@ This project takes in both facial images and audio samples in order to create a 
     * Have all locations of audio files within one dataframe.
 * Exporatory Data Analysis
 * Feature Extration:
-    * [MFCC](#https://en.wikipedia.org/wiki/Mel-frequency_cepstrum#:~:text=Mel%2Dfrequency%20cepstral%20coefficients%20(MFCCs,%2Da%2Dspectrum%22)): Mel-frequency cepstrum: distinct units of sound.
+    * [MFCC](https://en.wikipedia.org/wiki/Mel-frequency_cepstrum#:~:text=Mel%2Dfrequency%20cepstral%20coefficients%20(MFCCs,%2Da%2Dspectrum%22)): Mel-frequency cepstrum: distinct units of sound.
 * Machine Learning Models:
     * Convolutional Neural Networks
 * Convolutional Neural Network:
@@ -198,7 +198,7 @@ I was able to achieve a 62% accuracy on my validation data. However, unlike the 
 
 I then thought to myself, "how can we use these neural networks that I built in a live setting?" I then created a web application using Dash and Flask, where users can input an image file or an audio file. Once the app recognizes the input, it will run it through its respective Convolutional Neural Network and output the predictions, both sex, and emotion, for both images and audio. It will also output the opposite type of file, image to audio, and vice versa, depicting a representation of that predicted emotion. 
 
-Live images needed further investigation to fit the input parameters of the image CNN. Thus, OpenCV's [haarcascade-frontalface-default](#haarcascade_frontalface_default.xml) was used to extract the facial from the live input. Once the face image was recognized, the image was contorted and greyscaled to meet the CNN parameters. Also, [Py-Agender](#https://pypi.org/project/py-agender/) was used to predict the sex of the individual in the photo.  The live web application was hosted using an AWS EC2 instance.
+Live images needed further investigation to fit the input parameters of the image CNN. Thus, OpenCV's [haarcascade-frontalface-default](#haarcascade_frontalface_default.xml) was used to extract the facial from the live input. Once the face image was recognized, the image was contorted and greyscaled to meet the CNN parameters. Also, [Py-Agender](https://pypi.org/project/py-agender/) was used to predict the sex of the individual in the photo.  The live web application was hosted using an AWS EC2 instance.
 
 Here is an example of when we input an image file.
 
