@@ -31,7 +31,7 @@ Zachary Villarreal<br>
 <a name="Motivation"></a>
 ### Motivation
 
-Coming from a background in Biology and research focusing on human disease, I have always been interested in the interaction between humans and data science, specifically how our psychology influences data patterns. Emotions hold a dominant influence not only on how we live and interact with others but also on the actions we take and the choices we make. For example, feelings of happiness help us make decisions and allows us to consider a larger set of options, to be more likely to purchase goods or visit stores. While feelings of sadness, or fear, may stop an individual from stepping outside of their comfort zone and prevent them from taking action.
+As someone who comes from a background in Biological research, I have always been interested in the interaction between humans and data, specifically how our psychology influences data patterns. Emotions hold a dominant influence not only on how we live and interact with others, but also on the actions we take and the choices we make. For example, feelings of happiness help us make decisions and allows us to consider a larger set of options, to be more likely to purchase goods or visit stores. While feelings of sadness, or fear, may stop an individual from stepping outside of their comfort zone and prevent them from taking action.
 
 I often wondered, how can we be able to use machines to detect human affect, human emotion? This is when I started researching what is known as *Emotion AI*. Emotion AI, is a subset of artifical intelligence that aims to be able to predict human behavior, human emotion, in the same way that we, as humans, do. I knew I wanted to be able to build on already existing Emotion AI practices to be able to predict human emotion more effectively. 
 <a name="Project-Goal"></a>
@@ -52,7 +52,7 @@ This project takes in both facial images and audio samples in order to create a 
     * [SAVEE](#https://www.kaggle.com/ejlok1/surrey-audiovisual-expressed-emotion-savee): Surrey Audio-Visual Expressed Emotion
     * [TESS](#https://www.kaggle.com/ejlok1/toronto-emotional-speech-set-tess): Toronto Emotional Speech Set
 
-> Note: Four sets of data were utilized for emotion recognition via audio files, for reason that each data set consisted only of a couple thousand audio files. When accumulated together, these databases allowed for a more accurate predictive model. In addition to, an end goal of the models we are building are for live use within an app. Four different audio sources can provide different levels of pitch, sound, volume, etc. which can help combat variances within users' microphones.
+> Note: Four sets of data were utilized for emotion recognition via audio files, for the reason that each data set consisted only of a couple of thousand audio files. When accumulated together, these databases allowed for a more accurate predictive model. Also, an end goal of the models is to build a web application that takes in live data. Four different audio sources can provide different levels of pitch, sound, volume, etc. which can help combat variances within users' microphones.
 
 * Images:
     * [FER2013](#https://www.kaggle.com/deadskull7/fer2013): Facial Expression Recognition Competition
@@ -63,10 +63,10 @@ This project takes in both facial images and audio samples in order to create a 
 
 ##### Audio:
 * Load and Clean Data:
-    * Have all locations of audio files within one dataframe
+    * Have all locations of audio files within one dataframe.
 * Exporatory Data Analysis
 * Feature Extration:
-    * [MFCC](#https://en.wikipedia.org/wiki/Mel-frequency_cepstrum#:~:text=Mel%2Dfrequency%20cepstral%20coefficients%20(MFCCs,%2Da%2Dspectrum%22)): Mel-frequency cepstrum: distinct units of sound
+    * [MFCC](#https://en.wikipedia.org/wiki/Mel-frequency_cepstrum#:~:text=Mel%2Dfrequency%20cepstral%20coefficients%20(MFCCs,%2Da%2Dspectrum%22)): Mel-frequency cepstrum: distinct units of sound.
 * Machine Learning Models:
     * Convolutional Neural Networks
 * Convolutional Neural Network:
@@ -110,13 +110,13 @@ Distribution of Emotions             |  Distribution of Sex
 :-------------------------:|:-------------------------:
 ![](images/distribution_of_emotions_audio.png)  |  ![](images/distribution_of_sexes_audio.png)
 
-That's pretty interesting, I am now interested in looking at how things like pitch or volume is affected by the sex of the speaker. We can look at it from two perspectives. One being the wave plot, which depicts the amplitude of the sound over time, and the MFCC, or the *Mel Frequency Cepstral Coefficient*, which are the features I am feeding into my neural network. MFCC scales the sound frequencies to make the features better represent what we humans hear.
+That's pretty interesting; I am now curious to look at how things like pitch or volume are affected by the sex of the speaker. We can look at it from two perspectives. One being the wave plot, which depicts the amplitude of the sound over time, and the MFCC, or the *Mel Frequency Cepstral Coefficient*, which are the features I am feeding into my neural network. MFCC scales the sound frequencies to make the features better represent what we humans hear.
 
 Waveplot             |  MFCC (Male) | MFCC (Female)
 :-------------------------:|:-------------------------: | :-----------------------------:
 ![](images/male_vs_female_angry_audio.png)  |  ![](images/male_mfcc_audio.png) | ![](images/female_mfcc_audio.png)
 
-While although there are subtle differences in the MFCC plots, it might be hard to discern the key differences between both the male MFCC and the female MFCC of their respective *angry* audio clips. It is much more apparent in the waveplot, that there is a difference in the levels of sound provided by the two voice actors. The male's voice is distinctly louder than the female's. 
+While although there are subtle differences in the MFCC plots, it might be hard to discern the key differences between both the male MFCC and the female MFCC of their respective *angry* audio clips. It is much more apparent in the wave plot that there is a difference in the levels of sound provided by the two voice actors. The male's voice is distinctly louder than the female's. 
 
 <a href="#Table-of-Contents">Back to top</a><br>
 <a name="Image-Data"></a>
@@ -127,7 +127,7 @@ While although there are subtle differences in the MFCC plots, it might be hard 
 
 ![](images/distribution_of_emotions_images.png)
 
-There seems to be a much less even distribution of emotions over the image data. This could possibly cause a problem when it comes to training our neural networks later in this project, but we will deal with that later. Next, let's take a look at how the original images come in.
+There seems to be a much less even distribution of emotions over the image data. This uneven distribution could cause a problem in training our neural networks later in this project, but we will deal with that then. Next, let's take a look at how the original images come in.
 
 Examples of Emotional Expressions:<br>
 
@@ -135,7 +135,7 @@ Angry |  Happy | Sad | Disgust | Surprise | Neutral | Fear|
 :-------------------------:|:-------------------------: | :-----------------------------: | :---: | :---: | :--: | :--:
 ![](images/angry_example.png) | ![](images/happy_example.png) |  ![](images/sad_example.png) | ![](images/disgust_example.png) | ![](images/surprise_example.png) | ![](images/neutral_example.png) | ![](images/fear_example.png)
 
-Interesting, it seems that the images are greyscaled, we can use this to teach our convolutional neural networks.
+Interesting, it seems that the images are greyscaled, we can use their respective pixel intensities to teach our convolutional neural networks.
 
 <a href="#Table-of-Contents">Back to top</a><br>
 <a name="Models"></a>
@@ -145,7 +145,7 @@ Interesting, it seems that the images are greyscaled, we can use this to teach o
 <a name="Convolutional-Neural-Networks"></a>
 ### Convolutional Neural Networks
 
-At a high level, a Convolutional Neural Network (CNN) is a deep learning algorithm that takes in an image as an input and is able to perform classification. However, unlike a regulare artifical neural network, a CNN has pre-processing steps that apply convolutions that highlight features of the inputted image to help distinguish between the various classes we are trying to learn. Because we are using the MFCC of the audio files, we can treat these as images as it provides more information and allows the use of CNNs. We will also be using a distinct CNN for emotion classification via facial images. 
+At a high level, a Convolutional Neural Network (CNN) is a deep learning algorithm that takes in an image as an input and can perform classification. However, unlike a regular artificial neural network, CNN has pre-processing steps that apply convolutions that highlight features of the inputted image to distinguish between the various classes we are trying to learn. Because we are using the MFCC of the audio files, we can treat them as images as they provide more information and allow the use of CNN's. We will also be using a distinct CNN for emotion classification via facial images. 
 
 <a href="#Table-of-Contents">Back to top</a><br>
 <a name="Audio-Model"></a>
@@ -168,7 +168,7 @@ Audio CNN Accuracy  |  Audio CNN Confusion Matrix
 :-------------------------:|:-------------------------:
 ![](images/cnn_model_accuracy.png)  |  ![](images/audio_cnn_confusion_matrix.png)
 
-I was able to achieve a 67% accuracy on my validation data. While at first this might not seem very high, we must remember that we are trying to predict between 14 distinct classes, which when randomly chosen, has approximate a 7% of being right. Thus, we were able to achieve a 60% increase in the model's accuracy.
+I was able to achieve a 67% accuracy on my validation data. While at first, this might not seem very high, we must remember that we are trying to predict between 14 distinct classes, which, when randomly chosen, has approximate a 7% of being right. Thus, we were able to achieve a 60% increase in the model's accuracy. 
 
 <a href="#Table-of-Contents">Back to top</a><br>
 <a name="Image-Model"></a>
@@ -189,21 +189,21 @@ Image CNN Accuracy  |  Image CNN Confusion Matrix
 :-------------------------:|:-------------------------:
 ![](images/image_cnn_accuracy.png)  |  ![](images/image_cnn_cf.png)
 
-I was able to achieve a 62% accuracy on my validation data. However, unlike the audio data, the image data was not pre-labeled for the sex of the individual being photographed, so we are only trying to predict between 7 distinct emotions. Thus, we have a 48% increase in accuracy from our baseline of 14%.
+I was able to achieve a 62% accuracy on my validation data. However, unlike the audio data, the image data was not pre-labeled for the sex of the photographed individual, so we are only trying to predict between 7 distinct emotions. Thus, we have a 48% increase in accuracy from our baseline of 14%.
 
 <a href="#Table-of-Contents">Back to top</a><br>
 <a name="Dash-App"></a>
 ## Dash App
 
 
-I then thought to myself, "how can we use these neural networks that I built in a live setting?" I then created a web application using Dash and Flask, where users can input either an image file or an audio file. Once the app recognizes the input, it will run it through its respective Convolutional Neural Network and will output the predictions, both sex and emotion, for both images and audio. In addition, it will output the opposite type of file, image to audio and vice versa, depicting a representation of that predicted emotion. 
+I then thought to myself, "how can we use these neural networks that I built in a live setting?" I then created a web application using Dash and Flask, where users can input an image file or an audio file. Once the app recognizes the input, it will run it through its respective Convolutional Neural Network and output the predictions, both sex, and emotion, for both images and audio. It will also output the opposite type of file, image to audio, and vice versa, depicting a representation of that predicted emotion. 
 
-Live images needed further investigation in order to fit the input parameters of the image CNN. Thus, OpenCV's [haarcascade-frontalface-default](#haarcascade_frontalface_default.xml) aws used in order to extract the facial from the live input. Once the face image was recognized, the image was contorted and greyscaled in order to meet the CNN parameters. In addition, [Py-Agender](#https://pypi.org/project/py-agender/) was used in order to predict sex of the individual in the photo. 
+Live images needed further investigation to fit the input parameters of the image CNN. Thus, OpenCV's [haarcascade-frontalface-default](#haarcascade_frontalface_default.xml) was used to extract the facial from the live input. Once the face image was recognized, the image was contorted and greyscaled to meet the CNN parameters. Also, [Py-Agender](#https://pypi.org/project/py-agender/) was used to predict the sex of the individual in the photo.  The live web application was hosted using an AWS EC2 instance.
 
 Here is an example of when we input an image file.
 
 ![](images/female_angry_app.png)
-This app could be used for things, as simple as, trying to recognize emotions on images of sound bytes of yourself, to being able to teach individuals the importance of facial language or how the inflection in our voice is depicted by other people.
+This app could be used for things, as simple as trying to recognize emotions on images of sound bytes of yourself, to teach individuals the importance of facial language or how other people depict the inflection in our voice.
 
 <a href="#Table-of-Contents">Back to top</a><br>
 <a name="Conclusion"></a>
